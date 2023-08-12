@@ -1,4 +1,4 @@
-use rusqlite::{params, Connection, Result};
+use rusqlite::{params, Connection, Error, Result};
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{fs::File, io::Read};
@@ -57,7 +57,7 @@ pub fn load_from_json_file(path: &str) -> JSONChat {
     return chat;
 }
 
-pub fn create_chat(conn: &Connection, chat: &Chat) -> Result<()> {
+pub fn create_chat(conn: &Connection, chat: &Chat) -> Result<usize> {
     //
     //let new_id = generate_timestamp_id();
     conn.execute(
@@ -68,7 +68,6 @@ pub fn create_chat(conn: &Connection, chat: &Chat) -> Result<()> {
             chat.chat_id,
             chat.name,
             chat.created_at,
-        ]
-    )?;
-    Ok(())
+        ],
+    )
 }
