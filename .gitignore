@@ -2,3 +2,7 @@
 
 # general purpose data (database files etc)
 /_DATA
+
+# testing and backup files
+*.backup
+*.testing
