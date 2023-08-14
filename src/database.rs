@@ -16,13 +16,21 @@ pub fn setup(conn: &Connection) -> Result<()> {
     conn.execute(CREATE_ASSET_TABLE_QUERY, ())?;
     conn.execute(CREATE_ASSET_TYPE_TABLE_QUERY, ())?;
 
-    let test_chat_id = generate_timestamp_id();
-    let test_chat = Chat {
-        id: test_chat_id.clone(),
-        chat_id: 575757,
-        name: "chat test".into(),
-        created_at: "2023-08-11".into(),
-    };
+    //let test_chat_id = generate_timestamp_id();
+    //let test_chat = Chat {
+    //    id: test_chat_id.clone(),
+    //    chat_id: 575757,
+    //    name: "chat test".into(),
+    //    //created_at: "2023-08-11".into(),
+    //};
+    //let test_chat = Chat::new(575757, "chat test".into());
+    let test_chat = Chat::builder()
+        .id(575757)
+        .chat_id(8919164)
+        .name("Tanque".into())
+        .build();
+    let test_chat_id = test_chat.id();
+    println!("new test_chat_id is: {:?}", test_chat_id);
     create_chat(conn, &test_chat);
 
     let test_user_id = generate_timestamp_id();

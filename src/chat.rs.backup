@@ -3,14 +3,31 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{fs::File, io::Read};
 
-use crate::message::JSONMessage;
+use crate::{
+    helpers::{generate_id, generate_timestamp_id},
+    message::JSONMessage,
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Chat {
-    pub id: u64,
+    id: u64,
     pub chat_id: u64,
     pub name: String,
-    pub created_at: String,
+    //pub created_at: String,
+}
+
+impl Chat {
+    pub fn new(chat_id: u64, name: String) -> Self {
+        Chat {
+            id: generate_timestamp_id(),
+            chat_id: chat_id,
+            name: name,
+        }
+    }
+
+    pub fn id(&self) -> u64 {
+        self.id
+    }
 }
 
 pub const CREATE_CHAT_TABLE_QUERY: &str = r#"
@@ -18,9 +35,18 @@ pub const CREATE_CHAT_TABLE_QUERY: &str = r#"
         id INTEGER PRIMARY KEY,
         chat_id INTEGER NOT NULL,
         name TEXT NOT NULL,
-        created_at TEXT NOT NULL
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
 "#;
+
+//pub const CREATE_CHAT_TABLE_QUERY: &str = r#"
+//    CREATE TABLE IF NOT EXISTS chat (
+//        id INTEGER PRIMARY KEY,
+//        chat_id INTEGER NOT NULL,
+//        name TEXT NOT NULL,
+//        created_at TEXT NOT NULL
+//    )
+//"#;
 
 pub const INSERT_CHAT_QUERY: &str = r#"
     INSERT INTO chat (
@@ -28,7 +54,7 @@ pub const INSERT_CHAT_QUERY: &str = r#"
         chat_id,
         name,
         created_at
-    ) VALUES (?1, ?2, ?3, ?4)
+    ) VALUES (?1, ?2, ?3, CURRENT_TIMESTAMP)
 "#;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -67,7 +93,7 @@ pub fn create_chat(conn: &Connection, chat: &Chat) -> Result<usize> {
             chat.id,
             chat.chat_id,
             chat.name,
-            chat.created_at,
+            //chat.created_at,
         ],
     )
 }

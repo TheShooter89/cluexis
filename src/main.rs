@@ -1,18 +1,18 @@
+use serde_json::Value;
 use std::fs::File;
-use serde_json::{Value,};
 
 use rusqlite::{Connection, Result};
 
+mod chat;
+mod database;
 mod globals;
 mod helpers;
-mod database;
-mod chat;
 mod message;
 mod user;
 
-use chat::{load_from_json_file, JSONChat};
-use helpers::{generate_id, generate_timestamp_id, get_possible_message_fields};
+use chat::{create_chat, load_from_json_file, Chat, JSONChat};
 use database::setup;
+use helpers::{generate_id, generate_timestamp_id, get_possible_message_fields};
 
 fn main() -> Result<()> {
     println!("Hello, world!");
@@ -25,19 +25,53 @@ fn main() -> Result<()> {
     let parsed_chat: JSONChat = load_from_json_file(globals::TEST_JSON_PATH);
 
     for message in &parsed_chat.messages {
-        println!("### MESSAGE START ###");
+        //println!("### MESSAGE START ###");
         //println!("{:?}", message);
-        if let Some(text) = &message.text {
-            match text {
-                Value::Array(String) => println!("text is an array"),
-                //_ => println!("text is none"),
-                _ => continue,
-            }
+        //if let Some(text) = &message.text {
+        //    match text {
+        //        Value::Array(String) => println!("text is an array"),
+        //        //_ => println!("text is none"),
+        //        _ => continue,
+        //    }
+        //}
+        match &message.date {
+            Some(_) => continue,
+            None => println!(
+                "\n---\ndate field absent\n[id]: {:?}\n[type]: {:?}\n---",
+                message.id, message.message_type
+            ),
         }
-        println!("### MESSAGE END ###");
+        match message.message_type.as_str() {
+            "unsupported" => {
+                //
+                println!(
+                    "unsupported message_type, message id: {:?}\n---",
+                    message.id.to_string()
+                )
+            }
+            _ => continue,
+        }
+        //println!("### MESSAGE END ###");
     }
 
-    println!("{}", format!("This chat is with user: {}(id: {})\ntotal messages: {}", parsed_chat.name, parsed_chat.chat_id, parsed_chat.messages.len()));
+    println!(
+        "{}",
+        format!(
+            "This chat is with user: {}(id: {})\ntotal messages: {}",
+            parsed_chat.name,
+            parsed_chat.chat_id,
+            parsed_chat.messages.len()
+        )
+    );
+
+    //let andrea_chat = Chat::new(parsed_chat.chat_id as u64, parsed_chat.name.clone());
+    //println!(
+    //    "parsed chat fields still accessible, {:?}, {:?}",
+    //    parsed_chat.chat_id, parsed_chat.name
+    //);
+    //println!("chat object is: {:?}", andrea_chat);
+
+    //create_chat(&conn, &andrea_chat);
 
     Ok(())
 }
