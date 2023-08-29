@@ -155,7 +155,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "asset_id must be provided")]
     fn test_asset_builder_missing_asset_id() {
-        let asset = Asset::builder().message("prova".to_string()).build();
+        let asset = Asset::builder().message(18756911).build();
     }
 
     #[test]
@@ -166,7 +166,7 @@ mod tests {
 
     #[test]
     fn test_asset_type_builder_with_id() {
-        let asset = assetType::builder()
+        let asset = AssetType::builder()
             .id(19890809)
             .name("asset_type".to_string())
             .build();
@@ -177,7 +177,7 @@ mod tests {
 
     #[test]
     fn test_asset_type_builder_without_id() {
-        let asset = assetType::builder().name("asset_type".to_string()).build();
+        let asset = AssetType::builder().name("asset_type".to_string()).build();
 
         assert_eq!(asset.name, "asset_type");
     }
@@ -185,6 +185,6 @@ mod tests {
     #[test]
     #[should_panic = "name must be provided"]
     fn test_missing_required_asset_type_fields() {
-        let asset = assetType::builder().build();
+        let asset = AssetType::builder().build();
     }
 }
