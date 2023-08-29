@@ -41,7 +41,7 @@ written with rusty 💛️💙️ by Tanque
 
     "Freedom doesn't come cheap"
 
-`cluexis` stands with people of Ukraine in their fight against the brutal russian aggression and long gone occupation of their homeland
+`cluexis` stands with people of Ukraine in their fight against the brutal russian aggression and unrightful occupation of their homeland
 
 `cluexis` stands with people of Ukraine in their fight for **Freedom**, for **Peace**, for **Self-Determination**, for **Happiness**
 
