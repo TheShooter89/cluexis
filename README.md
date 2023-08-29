@@ -47,7 +47,7 @@ written with rusty 💛️💙️ by Tanque
 
 `cluexis` stands with this generation of young ukrainians robbed away of their youth by the war, who will have to find the strength to get up once again and rebuild from the rubbles
 
-> __
+####
 
 _By your side, for as long as it takes_ 💪️
 
