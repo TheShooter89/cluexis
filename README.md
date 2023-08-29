@@ -5,9 +5,9 @@ a simple data-analysis tool for exported Telegram chats, written in Rust
 
 ### What the heck is it?
 
-`cluexis` is a small tool written in Rust that aims to provide insight and deep statistics of Telegram chats.
+`cluexis` is a small tool written in Rust that aims to provide insights and deep statistics from Telegram chats.
 
-Leveraging data exported from the (desktop only?) Telegram client app in JSON format this crate stores chats data into a `sqlite` database and performs a plethora of statical and comparison analysis.
+Leveraging data exported from the (desktop only?) Telegram client app in JSON format this crate stores chats data into a `sqlite` database and performs a plethora of statistical and comparison analysis.
 
 
 ## Usage/Examples
@@ -47,6 +47,14 @@ written with rusty 💛️💙️ by Tanque
 
 `cluexis` stands with this generation of young ukrainians robbed away of their youth by the war, who will have to find the strength to get up once again and rebuild from the rubbles
 
+> __
+
+_By your side, for as long as it takes_ 💪️
+
+        Slava Ukraini 🇺🇦️
+
+### Donate
+
 Please contribute and donate through official government channels or globally-know remarkable institutions:
 
 - **UNITED24**: Institutinal fundraising, charity and media platform of Ukrainian Government. It's possible to donate for food, medicine, medical assistance, refugees support and more
@@ -63,6 +71,6 @@ Please contribute and donate through official government channels or globally-kn
 
 ---
 
-_By your side, for as long as it takes_ 💪️
 
-        Slava Ukraini 🇺🇦️
+    humans die, but *ideas* are bulletproof
+    🇺🇦️ ️🇪🇺️ 🏳️‍🌈️
