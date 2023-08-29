@@ -3,6 +3,7 @@ use std::fs::File;
 
 use rusqlite::{Connection, Result};
 
+mod asset;
 mod chat;
 mod database;
 mod globals;
@@ -11,7 +12,7 @@ mod message;
 mod user;
 
 use chat::{create_chat, load_from_json_file, Chat, JSONChat};
-use database::setup;
+use database::{load_mock_data, setup};
 use helpers::{generate_id, generate_timestamp_id, get_possible_message_fields};
 
 fn main() -> Result<()> {
@@ -20,6 +21,7 @@ fn main() -> Result<()> {
     // let conn = Connection::open("persons.db")?;
     let conn = Connection::open(globals::DB_PATH)?;
     setup(&conn)?;
+    load_mock_data(&conn)?;
 
     let parse_fields_test = get_possible_message_fields(globals::TEST_JSON_PATH);
     let parsed_chat: JSONChat = load_from_json_file(globals::TEST_JSON_PATH);

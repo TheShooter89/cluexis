@@ -1,10 +1,14 @@
 use rusqlite::{Connection, Result};
 
+use crate::asset::{
+    create_asset, create_asset_type, Asset, AssetType, CREATE_ASSET_TABLE_QUERY,
+    CREATE_ASSET_TYPE_TABLE_QUERY,
+};
 use crate::chat::{create_chat, Chat, CREATE_CHAT_TABLE_QUERY};
 use crate::helpers::generate_timestamp_id;
 use crate::message::{
-    create_message, create_message_type, Message, MessageType, CREATE_ASSET_TABLE_QUERY,
-    CREATE_ASSET_TYPE_TABLE_QUERY, CREATE_MESSAGE_TABLE_QUERY, CREATE_MESSAGE_TYPE_TABLE_QUERY,
+    create_message, create_message_type, Message, MessageType, CREATE_MESSAGE_TABLE_QUERY,
+    CREATE_MESSAGE_TYPE_TABLE_QUERY,
 };
 use crate::user::{create_user, User, CREATE_USER_TABLE_QUERY};
 
@@ -16,63 +20,60 @@ pub fn setup(conn: &Connection) -> Result<()> {
     conn.execute(CREATE_ASSET_TABLE_QUERY, ())?;
     conn.execute(CREATE_ASSET_TYPE_TABLE_QUERY, ())?;
 
-    //let test_chat_id = generate_timestamp_id();
-    //let test_chat = Chat {
-    //    id: test_chat_id.clone(),
-    //    chat_id: 575757,
-    //    name: "chat test".into(),
-    //    //created_at: "2023-08-11".into(),
-    //};
-    //let test_chat = Chat::new(575757, "chat test".into());
-    let test_chat = Chat::builder()
-        .id(575757)
-        .chat_id(8919164)
+    Ok(())
+}
+
+pub fn load_mock_data(conn: &Connection) -> Result<()> {
+    //
+    let mock_id_chat = generate_timestamp_id();
+    let mock_id_user = generate_timestamp_id();
+    let mock_id_message = generate_timestamp_id();
+
+    let mock_chat = Chat::builder();
+    let mock_user = User::builder();
+    let mock_message = Message::builder();
+    let mock_message_type = MessageType::builder();
+    let mock_asset = Asset::builder();
+    let mock_asset_type = AssetType::builder();
+
+    //mock_chat.chat_id(mock_id_chat).name("Tanque".into());
+    let chat = mock_chat
+        .chat_id(mock_id_chat)
         .name("Tanque".into())
         .build();
-    let test_chat_id = test_chat.id();
-    println!("new test_chat_id is: {:?}", test_chat_id);
-    create_chat(conn, &test_chat);
 
-    let test_user_id = generate_timestamp_id();
-    let test_user = User {
-        id: test_user_id.clone(),
-        user_id: 342432,
-        name: "Linus Torvalds".into(),
-        first_name: "Linus".into(),
-        last_name: "Torvalds".into(),
-        created_at: "2023-08-11".into(),
-    };
+    let user = mock_user
+        .user_id(mock_id_user)
+        .name("Tanque".into())
+        .first_name("Francesco".to_string())
+        .last_name("Paoletti".into())
+        .build();
 
-    create_user(conn, &test_user);
+    let message_type = mock_message_type.name("message".into()).build();
 
-    let test_message_type_id = generate_timestamp_id();
-    let test_message_type = MessageType {
-        id: test_message_type_id.clone(),
-        name: "message".into(),
-        created_at: "2023-08-11".into(),
-    };
-    create_message_type(conn, &test_message_type);
+    let message = mock_message
+        .message_id(mock_id_message)
+        .chat(chat.id().clone())
+        .author(user.id().clone())
+        .message_type(message_type.id().clone())
+        .text("placeholder text".into())
+        .date("2023-08-28".into())
+        .build();
 
-    println!("chat_id: {:?}", test_chat_id);
-    println!("user_id: {:?}", test_user_id);
-    println!("message_type_id: {:?}", test_message_type_id);
+    let asset_type = mock_asset_type.name("image".into()).build();
 
-    let test_message_id = generate_timestamp_id();
-    let test_message = Message {
-        id: test_message_id.into(),
-        message_id: generate_timestamp_id(),
-        chat: test_chat_id.into(),
-        author: test_user_id.into(),
-        message_type: test_message_type_id.into(),
-        text: Some("test".into()),
-        date: "test".into(),
-        edited: Some("test".into()),
-        replying_to: Some(generate_timestamp_id()),
-        duration_sec: Some(generate_timestamp_id()),
-        created_at: "test".into(),
-    };
+    let asset = mock_asset
+        .asset_type(asset_type.id().clone())
+        .message(message.id().clone())
+        .path("imaginary/path/to.file".into())
+        .build();
 
-    create_message(conn, &test_message);
+    create_chat(conn, &chat)?;
+    create_user(conn, &user)?;
+    create_message_type(conn, &message_type)?;
+    create_message(conn, &message)?;
+    create_asset_type(conn, &asset_type)?;
+    create_asset(conn, &asset)?;
 
     Ok(())
 }
