@@ -6,3 +6,6 @@
 # testing and backup files
 *.backup
 *.testing
+
+# github issue template folder
+/.github/ISSUE_TEMPLATE
