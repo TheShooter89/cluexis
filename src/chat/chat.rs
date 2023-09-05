@@ -1,7 +1,9 @@
 use serde::{Deserialize, Serialize};
 
+use crate::asset::Asset;
 use crate::helpers::generate_timestamp_id;
 use crate::message::JSONMessage;
+use crate::user::User;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Chat {
@@ -18,6 +20,24 @@ impl Chat {
     pub fn id(&self) -> u64 {
         self.id
     }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ImportedChat {
+    pub chat: Chat,
+    pub assets: Option<Vec<Asset>>,
+    pub metadata: Option<ImportedChatMetadata>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ImportedChatMetadata {
+    pub owner: (u64, String),
+    pub total_messages: u64,
+    pub total_assets: u64,
+    pub users: Vec<(u64, String)>,
+    pub oldest_message: u64,
+    pub newest_message: u64,
+    pub imported_on: String,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]

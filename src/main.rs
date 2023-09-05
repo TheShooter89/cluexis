@@ -9,11 +9,13 @@ mod database;
 mod globals;
 mod helpers;
 mod message;
+mod parser;
 mod user;
 
 use chat::{create_chat, load_from_json_file, Chat, JSONChat};
 use database::{load_mock_data, setup};
 use helpers::{generate_id, generate_timestamp_id, get_possible_message_fields};
+use parser::Parser;
 
 fn main() -> Result<()> {
     println!("Hello, world!");
@@ -24,7 +26,10 @@ fn main() -> Result<()> {
     load_mock_data(&conn)?;
 
     let parse_fields_test = get_possible_message_fields(globals::TEST_JSON_PATH);
-    let parsed_chat: JSONChat = load_from_json_file(globals::TEST_JSON_PATH);
+    //let parsed_chat: JSONChat = load_from_json_file(globals::TEST_JSON_PATH);
+
+    let parser = Parser::new(globals::TEST_JSON_PATH);
+    let parsed_chat: JSONChat = parser.parse();
 
     for message in &parsed_chat.messages {
         //println!("### MESSAGE START ###");
@@ -65,6 +70,15 @@ fn main() -> Result<()> {
             parsed_chat.messages.len()
         )
     );
+
+    let parsed_chat = load_from_json_file(globals::TEST_JSON_PATH);
+    println!("parsed chat via Parser: {:?}", parsed_chat);
+
+    for msg in parsed_chat.messages {
+        println!("+----+----+----+----+----+----+----+----+----+----+");
+        println!("message found, message id: {:?}", msg.id);
+        println!("+----+----+----+----+----+----+----+----+----+----+");
+    }
 
     //let andrea_chat = Chat::new(parsed_chat.chat_id as u64, parsed_chat.name.clone());
     //println!(
