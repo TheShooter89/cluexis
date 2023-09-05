@@ -5,7 +5,7 @@ pub const CREATE_USER_TABLE_QUERY: &str = r#"
         name TEXT NOT NULL,
         first_name TEXT,
         last_name TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT (datetime('now','localtime'))
     )
 "#;
 
@@ -17,5 +17,5 @@ pub const INSERT_USER_QUERY: &str = r#"
         first_name,
         last_name,
         created_at
-    ) VALUES (?1, ?2, ?3, ?4, ?5, CURRENT_TIMESTAMP)
+    ) VALUES (?1, ?2, ?3, ?4, ?5, (datetime('now','localtime')))
 "#;

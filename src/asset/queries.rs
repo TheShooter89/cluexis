@@ -4,7 +4,7 @@ pub const CREATE_ASSET_TABLE_QUERY: &str = r#"
         type INTEGER NOT NULL,
         message INTEGER NOT NULL,
         path TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY (type) REFERENCES asset_type (id),
         FOREIGN KEY (message) REFERENCES message (id)
     )
@@ -17,14 +17,14 @@ pub const INSERT_ASSET_QUERY: &str = r#"
         message,
         path,
         created_at
-    ) VALUES (?1, ?2, ?3, ?4, CURRENT_TIMESTAMP)
+    ) VALUES (?1, ?2, ?3, ?4, (datetime('now','localtime')))
 "#;
 
 pub const CREATE_ASSET_TYPE_TABLE_QUERY: &str = r#"
     CREATE TABLE IF NOT EXISTS asset_type (
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT (datetime('now','localtime'))
     )
 "#;
 
@@ -33,5 +33,5 @@ pub const INSERT_ASSET_TYPE_QUERY: &str = r#"
         id,
         name,
         created_at
-    ) VALUES (?1, ?2, CURRENT_TIMESTAMP)
+    ) VALUES (?1, ?2, (datetime('now','localtime')))
 "#;
